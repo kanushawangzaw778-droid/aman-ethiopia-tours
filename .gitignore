@@ -1,0 +1,58 @@
+# ─── Dependencies ────────────────────────────────────────────────
+node_modules/
+.pnp
+.pnp.js
+
+# ─── Build Outputs ───────────────────────────────────────────────
+dist/
+dist-ssr/
+.vite/
+
+# ─── Environment & Secrets ───────────────────────────────────────
+.env
+.env.local
+.env.*.local
+*.local
+
+# Firebase service account keys (NEVER commit these)
+serviceAccount*.json
+service-account*.json
+firebase-adminsdk*.json
+*.key.json
+
+# ─── Logs ────────────────────────────────────────────────────────
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ─── Firebase Emulator ───────────────────────────────────────────
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+
+# ─── OS Files ────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ─── Editor / IDE ────────────────────────────────────────────────
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.swp
+*.swn
+
+# ─── Misc ────────────────────────────────────────────────────────
+Untitled-1.txt
+*.code-workspace

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Bookings | Aman Ethiopia Tours & Travel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./src/style.css" />
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="container nav-container">
+        <a href="/" class="logo">
+          <span class="logo-text">AMAN ETHIOPIA</span>
+          <span class="logo-subline">TOURS & TRAVEL</span>
+        </a>
+        <nav class="nav-links">
+          <a href="/#home" class="nav-item">Home</a>
+          <a href="/#tours" class="nav-item">Tours</a>
+          <a href="/#destinations" class="nav-item">Destinations</a>
+          <a href="/#about" class="nav-item">About Us</a>
+          <a href="/#gallery" class="nav-item">Gallery</a>
+          <a href="/#contact" class="nav-item">Contact</a>
+        </nav>
+        <div class="nav-actions">
+          <a href="/#tours" class="btn btn-gold btn-sm">Book</a>
+          <button class="mobile-menu-toggle" id="menuToggle">
+            <span></span>
+            <span></span>
+          </button>
+          <button class="lang-toggle" id="langToggle" title="Switch language">አማ</button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="page-hero">
+        <div class="page-hero-bg" style="background-image: url('/assets/simien.png')"></div>
+        <div class="page-hero-overlay"></div>
+        <div class="container page-hero-content">
+          <span class="subtitle">Your Journeys</span>
+          <h1>My Bookings</h1>
+          <p id="userGreeting">Track your tour reservations, payment status, and confirmations.</p>
+        </div>
+      </section>
+
+      <section class="section bookings-section bg-cream">
+        <div class="container">
+          <div class="section-header align-center">
+            <span class="subtitle">Reservations</span>
+            <h2>Your Adventures</h2>
+          </div>
+
+          <div class="tours-grid" id="bookingsGrid">
+            <div class="loading-state">Loading your bookings...</div>
+          </div>
+
+          <div class="bookings-cta">
+            <a href="/#tours" class="btn btn-gold">Book Another Tour</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <div class="logo">
+            <span class="logo-text">AMAN ETHIOPIA</span>
+            <span class="logo-subline">TOURS & TRAVEL</span>
+          </div>
+          <p>Your portal to the ancient history, diverse culture, and stunning landscapes of Ethiopia.</p>
+        </div>
+        <div class="footer-links">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="/#home">Home</a></li>
+            <li><a href="/#tours">Tours</a></li>
+            <li><a href="/#destinations">Destinations</a></li>
+            <li><a href="/#about">About us</a></li>
+          </ul>
+        </div>
+        <div class="footer-newsletter">
+          <h3>Newsletter</h3>
+          <p>Get travel inspiration and special offers.</p>
+          <form class="newsletter-form" id="newsletterForm">
+            <input type="email" id="newsletterEmail" required placeholder="Email address" />
+            <button type="submit" class="btn btn-gold">Join</button>
+          </form>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="container">
+          <p>&copy; 2026 Aman Ethiopia Tours & Travel. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <a href="https://wa.me/251911000000" class="whatsapp-float" target="_blank" id="waFloat" aria-label="Chat on WhatsApp">
+      <svg viewBox="0 0 24 24" width="30" height="30"><path fill="currentColor" d="M12.031 6.172c-3.181 0-5.767 2.586-5.767 5.767 0 1.267.405 2.436 1.096 3.389l-.72 2.634 2.7-.711c.823.447 1.762.705 2.759.705 3.12 0 5.653-2.533 5.653-5.653.001-3.181-2.64-5.767-5.767-5.767zm3.844 8.016c-.159.447-.796.843-1.096.893-.243.033-.559.058-.893-.05-.205-.067-.474-.15-.818-.284-1.46-.576-2.411-2.053-2.486-2.153-.067-.091-.568-.751-.568-1.436s.359-1.018.484-1.152c.125-.134.275-.2.359-.2s.167-.008.242-.008c.084 0 .192-.033.3.234.117.284.4.976.434 1.052.033.075.058.159 0 .267-.058.117-.084.184-.167.284l-.242.275c-.084.1-.175.208-.075.384.1.175.442.726.951 1.177.651.576 1.201.751 1.376.843.175.091.275.075.384-.042.109-.125.467-.542.592-.726.125-.184.25-.15.425-.084.175.067 1.102.518 1.293.618.192.1.317.15.359.234.043.075.043.434-.116.893z"/></svg>
+    </a>
+
+    <script type="module" src="/src/my-bookings.js"></script>
+  </body>
+</html>

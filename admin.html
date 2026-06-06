@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Admin Dashboard | Aman Ethiopia Tours</title>
+    <link rel="stylesheet" href="./src/style.css">
+    <link rel="stylesheet" href="./src/admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+<body class="admin-body">
+    <div id="loginOverlay" class="admin-overlay">
+        <div class="login-card">
+            <h2>Admin Login</h2>
+            <p>Access the control center.</p>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="adminEmail" required autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="adminPassword" required autocomplete="current-password">
+                </div>
+                <label class="remember-me">
+                    <input type="checkbox" id="rememberMe" checked>
+                    <span>Keep me signed in</span>
+                </label>
+                <button type="submit" class="btn btn-gold btn-block">Sign In</button>
+                <p id="loginError" class="error-msg"></p>
+            </form>
+        </div>
+    </div>
+
+    <div id="adminApp" class="admin-app" style="display: none;">
+        <aside class="admin-sidebar">
+            <div class="sidebar-brand">
+                <span class="logo-text">AMAN ETHIOPIA</span>
+                <span class="logo-subline">ADMIN PANEL</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-view="dashboard">Dashboard</a>
+                <a href="#" class="nav-item" data-view="tours">Tours Manager</a>
+                <a href="#" class="nav-item" data-view="bookings">Bookings</a>
+                <a href="#" class="nav-item" data-view="messages">Messages</a>
+                <a href="#" class="nav-item" data-view="payments">Payments</a>
+                <a href="#" class="nav-item" data-view="settings">Settings</a>
+                <div class="nav-divider"></div>
+                <a href="/" class="nav-item">View Website</a>
+                <a href="#" id="logoutBtn" class="nav-item text-danger">Logout</a>
+            </nav>
+        </aside>
+
+        <main class="admin-main">
+            <header class="admin-header">
+                <h1 id="viewTitle">Dashboard Overview</h1>
+                <div class="admin-user">
+                    <span id="userEmail"></span>
+                </div>
+            </header>
+
+            <section id="dashboardView" class="view">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="label">Total Tours</span>
+                        <span class="value" id="countTours">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="label">Total Bookings</span>
+                        <span class="value" id="countBookings">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="label">Est. Revenue</span>
+                        <span class="value" id="totalRevenue">ETB 0</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="label">Pending Bookings</span>
+                        <span class="value" id="countPending">0</span>
+                    </div>
+                </div>
+
+                <div class="dashboard-charts">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Bookings This Month</h3>
+                            <select id="chartPeriod" class="chart-select">
+                                <option value="week">Weekly</option>
+                                <option value="month">Monthly</option>
+                            </select>
+                        </div>
+                        <canvas id="bookingsChart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Popular Tours</h3>
+                        <div id="popularToursList" class="popular-tours-list"></div>
+                    </div>
+                </div>
+
+                <div class="dashboard-lists">
+                    <div class="list-container">
+                        <h3>Recent Bookings</h3>
+                        <div class="admin-table-container">
+                            <table id="recentBookingsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Customer</th>
+                                        <th>Tour</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="toursView" class="view" style="display: none;">
+                <div class="view-header">
+                    <h2>Manage Tours</h2>
+                    <button class="btn btn-gold btn-sm" id="addNewTourBtn">+ Add New Tour</button>
+                </div>
+                <div class="admin-table-container">
+                    <table id="toursTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Location</th>
+                                <th>Price</th>
+                                <th>Category</th>
+                                <th>Availability</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="bookingsView" class="view" style="display: none;">
+                <div class="view-header">
+                    <h2>All Reservations</h2>
+                    <select id="bookingFilter" class="chart-select">
+                        <option value="all">All Statuses</option>
+                        <option value="pending">Pending</option>
+                        <option value="confirmed">Confirmed</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                </div>
+                <div class="admin-table-container">
+                    <table id="allBookingsTable">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Customer</th>
+                                <th>Tour</th>
+                                <th>Travel Date</th>
+                                <th>Participants</th>
+                                <th>Amount</th>
+                                <th>Payment</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="messagesView" class="view" style="display: none;">
+                <div class="view-header">
+                    <h2>Contact Messages</h2>
+                </div>
+                <div class="admin-table-container">
+                    <table id="messagesTable">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Subject</th>
+                                <th>Message</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="paymentsView" class="view" style="display: none;">
+                <div class="view-header">
+                    <h2>Payment Records</h2>
+                </div>
+                <div class="stats-grid stats-grid-sm">
+                    <div class="stat-card">
+                        <span class="label">Paid</span>
+                        <span class="value" id="countPaid">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="label">Pending Payment</span>
+                        <span class="value" id="countUnpaid">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="label">Total Collected</span>
+                        <span class="value" id="totalCollected">ETB 0</span>
+                    </div>
+                </div>
+                <div class="admin-table-container">
+                    <table id="paymentsTable">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Customer</th>
+                                <th>Tour</th>
+                                <th>Method</th>
+                                <th>Amount</th>
+                                <th>Payment Status</th>
+                                <th>Receipt</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="settingsView" class="view" style="display: none;">
+                <div class="view-header">
+                    <h2>System Settings</h2>
+                </div>
+                <div class="settings-grid">
+                    <div class="settings-card">
+                        <h3>Company Information</h3>
+                        <form id="settingsForm">
+                            <div class="form-group">
+                                <label>WhatsApp Number (no +)</label>
+                                <input type="text" id="sWhatsapp" placeholder="251911000000">
+                            </div>
+                            <div class="form-group">
+                                <label>Company Email</label>
+                                <input type="email" id="sEmail" placeholder="info@amanethiopiatours.com">
+                            </div>
+                            <div class="form-group">
+                                <label>Company Phone</label>
+                                <input type="text" id="sPhone" placeholder="+251 911 000 000">
+                            </div>
+                            <button type="submit" class="btn btn-gold">Save Settings</button>
+                        </form>
+                    </div>
+                    <div class="settings-card">
+                        <h3>Payment Configuration</h3>
+                        <p class="settings-note">Payment keys are configured via environment variables (.env). See .env.example for details.</p>
+                        <ul class="settings-list">
+                            <li>Stripe: <code>VITE_STRIPE_PAYMENT_LINK</code></li>
+                            <li>Telebirr: <code>VITE_TELEBIRR_MERCHANT_ID</code></li>
+                            <li>Notifications: <code>VITE_NOTIFICATION_WEBHOOK</code></li>
+                        </ul>
+                    </div>
+                    <div class="settings-card">
+                        <h3>Database Tools</h3>
+                        <p class="settings-note">Seed sample tours into Firestore (one-time setup).</p>
+                        <button class="btn btn-outline" id="seedToursBtn">Seed Sample Tours</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="tourModal" class="modal">
+        <div class="modal-content modal-lg">
+            <h2 id="modalTitle">Add New Tour</h2>
+            <form id="tourForm">
+                <input type="hidden" id="tourId">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Tour Name</label>
+                        <input type="text" id="tName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Price (ETB)</label>
+                        <input type="number" id="tPrice" required min="0">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Location</label>
+                        <input type="text" id="tLocation" required placeholder="Lalibela, Northern Ethiopia">
+                    </div>
+                    <div class="form-group">
+                        <label>Duration (e.g. 8 Days)</label>
+                        <input type="text" id="tDuration" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="tCategory">
+                            <option value="cultural">Cultural</option>
+                            <option value="adventure">Adventure</option>
+                            <option value="historical">Historical</option>
+                            <option value="trekking">Trekking</option>
+                            <option value="festival">Festival</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Max Slots</label>
+                        <input type="number" id="tMaxSlots" value="12" min="1">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="tAvailable" checked>
+                        <span>Available for booking</span>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="tDescription" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Tour Images (multiple)</label>
+                    <input type="file" id="tImageFile" accept="image/*" multiple>
+                    <input type="hidden" id="tImage">
+                    <div id="imagePreview" class="image-preview-grid"></div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-outline" id="closeTourModal">Cancel</button>
+                    <button type="submit" class="btn btn-gold" id="saveTourBtn">Save Tour</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="receiptModal" class="modal">
+        <div class="modal-content">
+            <h2>Payment Receipt</h2>
+            <div id="receiptContent" class="receipt-content"></div>
+            <div class="modal-actions">
+                <button class="btn btn-outline" id="closeReceiptModal">Close</button>
+                <button class="btn btn-gold" id="printReceiptBtn">Print</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="/src/admin.js"></script>
+</body>
+</html>

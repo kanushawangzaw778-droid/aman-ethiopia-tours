@@ -1,0 +1,51 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email == 'kanushawangzaw@gmail.com';
+    }
+
+    function clientPaymentFieldsUnchanged() {
+      return !request.resource.data.diff(resource.data).affectedKeys().hasAny(
+        ['paymentStatus', 'status', 'transactionId', 'receipt', 'receiptImage', 'paidAt', 'verifiedBy', 'proofSubmittedAt']
+      );
+    }
+
+    function validBookingCreate() {
+      return request.auth != null
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.paymentStatus in ['pending', 'unpaid']
+        && request.resource.data.status in ['pending', 'waiting_admin_confirmation'];
+    }
+
+    match /tours/{tourId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /bookings/{bookingId} {
+      allow create: if validBookingCreate();
+      allow read: if request.auth != null
+        && (resource.data.userId == request.auth.uid || isAdmin());
+      allow update: if isAdmin() && clientPaymentFieldsUnchanged();
+      allow delete: if isAdmin();
+    }
+
+    match /messages/{messageId} {
+      allow create: if true;
+      allow read, update: if isAdmin();
+    }
+
+    match /subscribers/{subId} {
+      allow create: if true;
+      allow read: if isAdmin();
+    }
+
+    match /settings/{docId} {
+      allow read, write: if isAdmin();
+    }
+  }
+}

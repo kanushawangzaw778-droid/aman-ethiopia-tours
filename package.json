@@ -1,0 +1,29 @@
+{
+  "name": "aman-ethiopia-tours",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev:api": "node server/index.js",
+    "dev:all": "concurrently \"npm run dev\" \"npm run dev:api\"",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start:api": "node server/index.js"
+  },
+  "dependencies": {
+    "chart.js": "^4.5.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "firebase": "^12.14.0",
+    "firebase-admin": "^13.4.0",
+    "gsap": "^3.15.0",
+    "nodemailer": "^6.10.0",
+    "stripe": "^17.7.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "vite": "^8.0.12"
+  }
+}

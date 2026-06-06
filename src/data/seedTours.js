@@ -1,0 +1,67 @@
+export const SEED_TOURS = [
+  {
+    name: 'Northern Historical Route',
+    price: 155000,
+    location: 'Lalibela, Gondar, Axum',
+    duration: '8 Days',
+    category: 'historical',
+    description:
+      'Explore the rock-hewn churches of Lalibela, the castles of Gondar, and the ancient obelisks of Axum on this comprehensive northern circuit.',
+    image: '/assets/lalibela.png',
+    images: ['/assets/lalibela.png', '/assets/addis.png'],
+    available: true,
+    maxSlots: 12,
+  },
+  {
+    name: 'Omo Valley Cultural Expedition',
+    price: 225000,
+    location: 'Omo Valley, Southern Ethiopia',
+    duration: '10 Days',
+    category: 'cultural',
+    description:
+      'Journey into the Omo Valley to meet diverse tribal communities and witness centuries-old traditions, ceremonies, and daily life.',
+    image: '/assets/omo.png',
+    images: ['/assets/omo.png'],
+    available: true,
+    maxSlots: 8,
+  },
+  {
+    name: 'Simien Mountains Trekking',
+    price: 190000,
+    location: 'Simien Mountains National Park',
+    duration: '7 Days',
+    category: 'trekking',
+    description:
+      'Trek through the Roof of Africa alongside gelada baboons, dramatic escarpments, and breathtaking highland vistas.',
+    image: '/assets/simien.png',
+    images: ['/assets/simien.png'],
+    available: true,
+    maxSlots: 10,
+  },
+  {
+    name: 'Timkat Festival Experience',
+    price: 105000,
+    location: 'Addis Ababa & Gondar',
+    duration: '5 Days',
+    category: 'festival',
+    description:
+      'Celebrate Epiphany (Timkat) with vibrant processions, sacred rituals, and the spiritual heart of Ethiopian Orthodox tradition.',
+    image: '/assets/timkat.png',
+    images: ['/assets/timkat.png'],
+    available: true,
+    maxSlots: 15,
+  },
+  {
+    name: 'Danakil Depression Adventure',
+    price: 260000,
+    location: 'Danakil Depression, Afar Region',
+    duration: '4 Days',
+    category: 'adventure',
+    description:
+      'Witness otherworldly landscapes — active lava lakes, neon-colored hot springs, and salt flats in one of Earth\'s most extreme environments.',
+    image: '/assets/addis.png',
+    images: ['/assets/addis.png'],
+    available: true,
+    maxSlots: 6,
+  },
+];

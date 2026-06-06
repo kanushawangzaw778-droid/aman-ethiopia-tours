@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aman Ethiopia Tours & Travel | Discover the Soul of Ethiopia</title>
+    <meta name="description" content="Premium, authentic cultural and adventure tours in Ethiopia. Explore Lalibela, Simien Mountains, Omo Valley, and more with local experts." />
+    <meta name="keywords" content="Ethiopia tours, Lalibela, Simien Mountains, Omo Valley, cultural tours, adventure travel, Aman Ethiopia" />
+    <meta property="og:title" content="Aman Ethiopia Tours & Travel | Discover the Soul of Ethiopia" />
+    <meta property="og:description" content="Premium, authentic cultural and adventure tours in Ethiopia with local expert guides." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://amanethiopiatours.com" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href="https://amanethiopiatours.com" />
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- GSAP & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="container nav-container">
+        <a href="#" class="logo">
+          <span class="logo-text">AMAN ETHIOPIA</span>
+          <span class="logo-subline">TOURS & TRAVEL</span>
+        </a>
+        <nav class="nav-links">
+          <a href="#home" class="nav-item active">Home</a>
+          <a href="#tours" class="nav-item">Tours</a>
+          <a href="#destinations" class="nav-item">Destinations</a>
+          <a href="#about" class="nav-item">About Us</a>
+          <a href="#gallery" class="nav-item">Gallery</a>
+          <a href="#contact" class="nav-item">Contact</a>
+        </nav>
+        <div class="nav-actions">
+          <a href="#tours" class="btn btn-gold btn-sm" data-i18n="nav.book">Book</a>
+          <button class="mobile-menu-toggle" id="menuToggle">
+            <span></span>
+            <span></span>
+          </button>
+          <button class="lang-toggle" id="langToggle" title="Switch language">አማ</button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- Hero Section -->
+      <section id="home" class="hero">
+        <div class="hero-bg">
+          <div class="hero-overlay"></div>
+          <div class="hero-slides">
+            <div class="slide active" style="background-image: url('/assets/lalibela.png')"></div>
+            <div class="slide" style="background-image: url('/assets/simien.png')"></div>
+            <div class="slide" style="background-image: url('/assets/omo.png')"></div>
+            <div class="slide" style="background-image: url('/assets/addis.png')"></div>
+          </div>
+        </div>
+        <div class="container hero-content">
+          <h1 class="reveal-text">Discover the Soul of <span class="text-gradient">Ethiopia</span></h1>
+          <p class="reveal-up">Authentic cultural, historical, and adventure journeys crafted by local experts.</p>
+          <div class="hero-btns reveal-up">
+            <a href="#tours" class="btn btn-white">Explore Tours</a>
+            <a href="#contact" class="btn btn-outline">Start Planning</a>
+          </div>
+        </div>
+        <div class="scroll-indicator">
+          <span>Scroll</span>
+          <div class="line"></div>
+        </div>
+      </section>
+
+      <!-- Why Choose Us -->
+      <section class="section why-us">
+        <div class="container">
+          <div class="section-header align-center">
+            <span class="subtitle">Excellence in Every Journey</span>
+            <h2>Why Choose Aman Ethiopia</h2>
+          </div>
+          <div class="features-grid">
+            <div class="feature-card">
+              <div class="icon">🌍</div>
+              <h3>Local Expert Guides</h3>
+              <p>Passionate storytellers who bring Ethiopia's deep history and culture to life.</p>
+            </div>
+            <div class="feature-card">
+              <div class="icon">✨</div>
+              <h3>Custom Itineraries</h3>
+              <p>Personalized experiences tailored to your interests, pace, and travel style.</p>
+            </div>
+            <div class="feature-card">
+              <div class="icon">🗣️</div>
+              <h3>Multilingual Support</h3>
+              <p>Fluent guides in English, Spanish, French, German, and more for seamless travel.</p>
+            </div>
+            <div class="feature-card">
+              <div class="icon">🤝</div>
+              <h3>Trusted Globally</h3>
+              <p>Partnering with world-class travel platforms like SafariBookings and Viator.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Featured Tours -->
+      <section id="tours" class="section tours-section">
+        <div class="container">
+          <div class="section-header">
+            <div class="header-left">
+              <span class="subtitle">Adventure Awaits</span>
+              <h2>Featured Expeditions</h2>
+            </div>
+            <div class="tour-controls">
+                <div class="search-bar">
+                    <input type="text" id="tourSearch" placeholder="Search destinations..." data-i18n="tours.search">
+                </div>
+                <div class="tour-filters">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="cultural">Cultural</button>
+                    <button class="filter-btn" data-filter="adventure">Adventure</button>
+                    <button class="filter-btn" data-filter="historical">Historical</button>
+                    <button class="filter-btn" data-filter="trekking">Trekking</button>
+                    <button class="filter-btn" data-filter="festival">Festival</button>
+                </div>
+            </div>
+            <div class="advanced-filters">
+                <div class="filter-group">
+                    <label>Destination</label>
+                    <select id="filterDestination">
+                        <option value="">All Destinations</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Price Range</label>
+                    <select id="filterPrice">
+                        <option value="">Any Price</option>
+                        <option value="0-50000">Under ETB 50,000</option>
+                        <option value="50001-100000">ETB 50,000 – 100,000</option>
+                        <option value="100001-200000">ETB 100,000 – 200,000</option>
+                        <option value="200001+">ETB 200,000+</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Duration</label>
+                    <select id="filterDuration">
+                        <option value="">Any Duration</option>
+                        <option value="1-5">1–5 Days</option>
+                        <option value="6-8">6–8 Days</option>
+                        <option value="9+">9+ Days</option>
+                    </select>
+                </div>
+                <button class="btn btn-outline btn-sm" id="clearFilters">Clear Filters</button>
+            </div>
+          </div>
+          
+          <div class="tours-grid" id="toursGrid">
+            <!-- Dynamic Tours will be injected here -->
+            <div class="loading-state">Discovering unique experiences...</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Stats Section -->
+      <section class="stats-section">
+        <div class="container stats-grid">
+          <div class="stat-item">
+            <span class="stat-number" data-target="5000">0</span>
+            <span class="stat-label">Happy Travelers</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number" data-target="300">0</span>
+            <span class="stat-label">Tours Organized</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number" data-target="50">0</span>
+            <span class="stat-label">Destinations</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number" data-target="10">0</span>
+            <span class="stat-label">Years Experience</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Destinations -->
+      <section id="destinations" class="section destinations-section bg-cream">
+        <div class="container">
+          <div class="section-header align-center">
+            <span class="subtitle">Explore Ethiopia</span>
+            <h2>Popular Destinations</h2>
+          </div>
+          <div class="destinations-grid">
+            <div class="dest-item large">
+              <img src="/assets/lalibela.png" alt="Lalibela">
+              <div class="dest-overlay">
+                <h3>Lalibela</h3>
+                <p>The New Jerusalem</p>
+              </div>
+            </div>
+            <div class="dest-item">
+              <img src="/assets/addis.png" alt="Addis Ababa">
+              <div class="dest-overlay">
+                <h3>Addis Ababa</h3>
+                <p>Capital of Africa</p>
+              </div>
+            </div>
+            <div class="dest-item">
+              <img src="/assets/omo.png" alt="Omo Valley">
+              <div class="dest-overlay">
+                <h3>Omo Valley</h3>
+                <p>Cultural Cradle</p>
+              </div>
+            </div>
+            <div class="dest-item">
+              <img src="/assets/simien.png" alt="Simien Mountains">
+              <div class="dest-overlay">
+                <h3>Simien Mountains</h3>
+                <p>The Roof of Africa</p>
+              </div>
+            </div>
+            <div class="dest-item">
+              <img src="/assets/timkat.png" alt="Festivals">
+              <div class="dest-overlay">
+                <h3>Cultural Festivals</h3>
+                <p>Meskel & Timkat</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Gallery -->
+      <section id="gallery" class="section gallery-section">
+        <div class="container">
+          <div class="section-header">
+            <span class="subtitle">In Pictures</span>
+            <h2>Moments from the Field</h2>
+          </div>
+          <div class="masonry-gallery">
+            <div class="gallery-item"><img src="/assets/lalibela.png" alt="Gallery"></div>
+            <div class="gallery-item"><img src="/assets/simien.png" alt="Gallery"></div>
+            <div class="gallery-item"><img src="/assets/omo.png" alt="Gallery"></div>
+            <div class="gallery-item"><img src="/assets/coffee.png" alt="Gallery"></div>
+            <div class="gallery-item"><img src="/assets/addis.png" alt="Gallery"></div>
+            <div class="gallery-item"><img src="/assets/timkat.png" alt="Gallery"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Testimonials -->
+      <section class="section testimonials bg-dark">
+        <div class="container">
+          <div class="section-header align-center">
+            <span class="subtitle">Testimonials</span>
+            <h2 class="text-white">What Explorers Say</h2>
+          </div>
+          <div class="testimonial-carousel">
+            <div class="testimonial-card">
+              <div class="stars">★★★★★</div>
+              <p>"An unforgettable journey! Aman Ethiopia Tours handled every detail with perfection. Our guide was incredibly knowledgeable."</p>
+              <div class="author">- Sarah Jenkins, UK</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- About Us -->
+      <section id="about" class="section about-section">
+        <div class="container about-grid">
+          <div class="about-content">
+            <span class="subtitle">Our Story</span>
+            <h2>Authentic Journeys by Local Experts</h2>
+            <p>Aman Ethiopia Tours & Travel is a team of young Ethiopian tourism professionals dedicated to providing authentic and unforgettable travel experiences.</p>
+            <p>Our mission is to showcase the true soul of Ethiopia while promoting sustainable tourism that benefits local communities and preserves our rich heritage.</p>
+            <div class="about-badges">
+              <div class="badge">Viator Partner</div>
+              <div class="badge">SafariBookings</div>
+              <div class="badge">Certified Operator</div>
+            </div>
+          </div>
+          <div class="about-image">
+            <img src="/assets/coffee.png" alt="Ethiopian Culture">
+            <div class="experience-box">
+              <span class="years">10+</span>
+              <span class="text">Years of Excellence</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact -->
+      <section id="contact" class="section contact-section bg-cream">
+        <div class="container contact-grid">
+          <div class="contact-info">
+            <h2>Plan Your Ethiopian Adventure</h2>
+            <p>Ready to discover Ethiopia? Contact our local experts to start crafting your personalized itinerary.</p>
+            <div class="contact-details">
+              <div class="detail-item">
+                <span class="icon">📍</span>
+                <div>
+                  <strong>Office</strong>
+                  <p>Bole Road, Addis Ababa, Ethiopia</p>
+                </div>
+              </div>
+              <div class="detail-item">
+                <span class="icon">📞</span>
+                <div>
+                  <strong>Phone / WhatsApp</strong>
+                  <p>+251 911 000 000</p>
+                </div>
+              </div>
+              <div class="detail-item">
+                <span class="icon">✉️</span>
+                <div>
+                  <strong>Email</strong>
+                  <p>info@amanethiopiatours.com</p>
+                </div>
+              </div>
+            </div>
+            <div class="social-links">
+              <a href="#">FB</a>
+              <a href="#">IG</a>
+              <a href="#">TW</a>
+              <a href="#">YT</a>
+            </div>
+          </div>
+          <div class="contact-form-container">
+            <form class="contact-form" id="contactForm">
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Full Name</label>
+                  <input type="text" id="cName" required placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                  <label>Email Address</label>
+                  <input type="email" id="cEmail" required placeholder="john@example.com">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Interested In</label>
+                <select id="cTour">
+                  <option value="">Select a Tour</option>
+                  <option value="Custom Trip">Custom Trip</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Message</label>
+                <textarea id="cMessage" rows="4" required placeholder="Tell us about your dream trip..."></textarea>
+              </div>
+              <button type="submit" class="btn btn-gold btn-block" data-i18n="contact.send">Send Inquiry</button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <div class="logo">
+            <span class="logo-text">AMAN ETHIOPIA</span>
+            <span class="logo-subline">TOURS & TRAVEL</span>
+          </div>
+          <p>Your portal to the ancient history, diverse culture, and stunning landscapes of Ethiopia.</p>
+        </div>
+        <div class="footer-links">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#tours">Tours</a></li>
+            <li><a href="#destinations">Destinations</a></li>
+            <li><a href="#about">About us</a></li>
+          </ul>
+        </div>
+        <div class="footer-newsletter">
+          <h3>Newsletter</h3>
+          <p>Get travel inspiration and special offers.</p>
+          <form class="newsletter-form" id="newsletterForm">
+            <input type="email" id="newsletterEmail" required placeholder="Email address">
+            <button type="submit" class="btn btn-gold">Join</button>
+          </form>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="container">
+          <p>&copy; 2026 Aman Ethiopia Tours & Travel. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Booking Modal -->
+    <div id="bookingModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Secure Your Journey</h2>
+                <button id="closeBookingModal" class="close-btn">&times;</button>
+            </div>
+            <form id="bookingForm">
+                <input type="hidden" id="bookingTourId">
+                <input type="hidden" id="bookingTourName">
+                <input type="hidden" id="bookingTourPrice">
+                
+                <div class="booking-summary-box">
+                    <span id="summaryTourName">Tour Name</span> 
+                    <span id="summaryTourPrice">ETB 0</span>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="bName" required placeholder="Abebe Bikila">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="bEmail" required placeholder="abebe@example.com">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Phone / WhatsApp</label>
+                        <input type="tel" id="bPhone" required placeholder="+251 9...">
+                    </div>
+                    <div class="form-group">
+                        <label>Travelers</label>
+                        <input type="number" id="bParticipants" value="1" min="1" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Preferred Date</label>
+                    <input type="date" id="bDate" required>
+                </div>
+                <div class="form-group">
+                    <label>Special Requests</label>
+                    <textarea id="bRequests" rows="2"></textarea>
+                </div>
+
+                <div class="payment-selection">
+                    <label>Payment Method</label>
+                    <div class="payment-options">
+                        <label class="payment-opt">
+                            <input type="radio" name="payment" value="stripe" checked>
+                            <span>Stripe (International)</span>
+                        </label>
+                        <label class="payment-opt">
+                            <input type="radio" name="payment" value="telebirr">
+                            <span>Telebirr (Local)</span>
+                        </label>
+                        <label class="payment-opt">
+                            <input type="radio" name="payment" value="bank">
+                            <span>Bank Transfer</span>
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-gold btn-block">Confirm & Book Now</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bank Transfer Instructions Modal -->
+    <div id="bankModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Bank Transfer Instructions</h2>
+                <button id="closeBankModal" class="close-btn">&times;</button>
+            </div>
+            <div id="bankInstructions" class="bank-instructions"></div>
+            <button class="btn btn-gold btn-block" id="bankModalDone">Got It</button>
+        </div>
+    </div>
+
+    <!-- Receipt Modal -->
+    <div id="receiptModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Booking Confirmed</h2>
+                <button id="closeReceiptModal" class="close-btn">&times;</button>
+            </div>
+            <div id="clientReceipt" class="receipt-content"></div>
+        </div>
+    </div>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/251911000000" class="whatsapp-float" target="_blank" id="waFloat" aria-label="Chat on WhatsApp">
+      <svg viewBox="0 0 24 24" width="30" height="30"><path fill="currentColor" d="M12.031 6.172c-3.181 0-5.767 2.586-5.767 5.767 0 1.267.405 2.436 1.096 3.389l-.72 2.634 2.7-.711c.823.447 1.762.705 2.759.705 3.12 0 5.653-2.533 5.653-5.653.001-3.181-2.64-5.767-5.767-5.767zm3.844 8.016c-.159.447-.796.843-1.096.893-.243.033-.559.058-.893-.05-.205-.067-.474-.15-.818-.284-1.46-.576-2.411-2.053-2.486-2.153-.067-.091-.568-.751-.568-1.436s.359-1.018.484-1.152c.125-.134.275-.2.359-.2s.167-.008.242-.008c.084 0 .192-.033.3.234.117.284.4.976.434 1.052.033.075.058.159 0 .267-.058.117-.084.184-.167.284l-.242.275c-.084.1-.175.208-.075.384.1.175.442.726.951 1.177.651.576 1.201.751 1.376.843.175.091.275.075.384-.042.109-.125.467-.542.592-.726.125-.184.25-.15.425-.084.175.067 1.102.518 1.293.618.192.1.317.15.359.234.043.075.043.434-.116.893z"/></svg>
+    </a>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
