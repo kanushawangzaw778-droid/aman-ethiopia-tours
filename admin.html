@@ -33,11 +33,12 @@
         </div>
     </div>
 
-    <div id="adminApp" class="admin-app" style="display: none;">
+    <div id="adminApp" class="admin-app">
         <aside class="admin-sidebar">
             <div class="sidebar-brand">
                 <span class="logo-text">AMAN ETHIOPIA</span>
                 <span class="logo-subline">ADMIN PANEL</span>
+                <div id="demoBadge" class="demo-badge" style="display: none;">Demo Mode (Local-Only)</div>
             </div>
             <nav class="sidebar-nav">
                 <a href="#" class="nav-item active" data-view="dashboard">Dashboard</a>
@@ -84,7 +85,7 @@
                     <div class="chart-card">
                         <div class="chart-header">
                             <h3>Bookings This Month</h3>
-                            <select id="chartPeriod" class="chart-select">
+                            <select id="chartPeriod" class="chart-select" aria-label="Select chart period">
                                 <option value="week">Weekly</option>
                                 <option value="month">Monthly</option>
                             </select>
@@ -143,7 +144,7 @@
             <section id="bookingsView" class="view" style="display: none;">
                 <div class="view-header">
                     <h2>All Reservations</h2>
-                    <select id="bookingFilter" class="chart-select">
+                    <select id="bookingFilter" class="chart-select" aria-label="Filter bookings by status">
                         <option value="all">All Statuses</option>
                         <option value="pending">Pending</option>
                         <option value="confirmed">Confirmed</option>

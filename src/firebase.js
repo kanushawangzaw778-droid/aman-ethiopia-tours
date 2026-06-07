@@ -19,7 +19,17 @@ const envConfig = {
 };
 
 export const isFirebaseConfigured =
-  !isPlaceholder(envConfig.apiKey) && !isPlaceholder(envConfig.projectId);
+  !isPlaceholder(envConfig.apiKey) && 
+  !isPlaceholder(envConfig.projectId) &&
+  envConfig.apiKey.length > 10; // Extra check for valid looking key
+
+if (!isFirebaseConfigured) {
+  console.warn('⚠️ FIREBASE NOT CONFIGURED: The application is running in "Demo Mode".');
+  console.warn('Updates made in the admin panel will only be saved to this browser\'s LocalStorage.');
+  console.warn('To enable global updates across all devices, please add your Firebase environment variables (VITE_FIREBASE_*) to your .env or Vercel settings.');
+} else {
+  console.log('✅ Firebase initialized successfully in global mode.');
+}
 
 const firebaseConfig = isFirebaseConfigured
   ? envConfig

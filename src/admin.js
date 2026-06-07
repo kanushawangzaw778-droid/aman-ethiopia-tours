@@ -59,6 +59,12 @@ function showAdminApp(email) {
   loginOverlay.style.display = 'none';
   adminApp.style.display = 'flex';
   document.getElementById('userEmail').innerText = email || APP_CONFIG.adminEmail;
+  
+  const demoBadge = document.getElementById('demoBadge');
+  if (demoBadge) {
+    demoBadge.style.display = isFirebaseConfigured ? 'none' : 'block';
+  }
+
   initDashboard();
 }
 

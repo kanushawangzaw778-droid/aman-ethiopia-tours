@@ -39,7 +39,7 @@
 
 /* Dashboard Layout */
 .admin-app {
-    display: flex;
+    display: none;
     min-height: 100vh;
 }
 
@@ -423,4 +423,24 @@ td {
     .admin-sidebar {
         width: 220px;
     }
+}
+
+.demo-badge {
+    margin-top: 1rem;
+    padding: 0.4rem 0.8rem;
+    background: #ffcc00;
+    color: #333;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 4px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    animation: pulse-warn 2s infinite;
+}
+
+@keyframes pulse-warn {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
 }
