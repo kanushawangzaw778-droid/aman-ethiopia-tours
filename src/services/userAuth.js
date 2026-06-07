@@ -81,19 +81,25 @@ export function onUserAuthChanged(callback) {
   if (isFirebaseConfigured) {
     return onAuthStateChanged(auth, (user) => {
       if (user && !isAdminEmail(user.email)) {
+        // Clear any leftover demo session to prevent mixing states
+        clearDemoSession();
         callback({
           uid: user.uid,
           email: user.email,
           displayName: user.displayName || user.email,
         });
       } else if (user && isAdminEmail(user.email)) {
+        // Admin account — not a regular user, return null so pages redirect to login
         callback(null);
       } else {
-        callback(getDemoSession());
+        // user === null: logged out. Return null (do NOT fall back to demo session)
+        clearDemoSession();
+        callback(null);
       }
     });
   }
 
+  // Demo mode — session is synchronous via localStorage
   callback(getDemoSession());
   return () => {};
 }

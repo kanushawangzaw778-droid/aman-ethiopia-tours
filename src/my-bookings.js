@@ -1,8 +1,8 @@
 import './style.css';
-import { db, isFirebaseConfigured } from './firebase';
+import { db, auth, isFirebaseConfigured } from './firebase';
 import { collection, query, where, orderBy, onSnapshot } from 'firebase/firestore';
 import { getCurrentUser, redirectToLogin, onUserAuthChanged } from './services/userAuth';
-import { getDemoBookingsForUser } from './services/demoStorage';
+import { getDemoBookingsForUser, onDemoStorageChange } from './services/demoStorage';
 import { formatFirestoreDate, formatCurrency } from './utils/formatDate';
 import { initAuthNav, initMobileMenu, initNavbarScroll } from './utils/authNav';
 import { initLanguageToggle } from './i18n';
@@ -80,8 +80,10 @@ function renderBookings(bookings) {
 
 function loadDemoBookings(user) {
   renderBookings(getDemoBookingsForUser(user.uid));
-  window.addEventListener('storage', (e) => {
-    if (e.key === 'aman_demo_bookings') {
+  // BroadcastChannel catches updates from admin in same tab; storage event
+  // catches updates from admin in a different tab.
+  onDemoStorageChange((type) => {
+    if (type === 'bookings') {
       renderBookings(getDemoBookingsForUser(user.uid));
     }
   });
@@ -130,13 +132,42 @@ initNavbarScroll();
 initLanguageToggle();
 initWhatsAppFloat();
 
-const user = getCurrentUser();
-if (!user) {
-  redirectToLogin('/my-bookings.html');
+/**
+ * Auth guard — handles both demo mode (synchronous) and Firebase mode (async).
+ *
+ * Bug fix: Firebase rehydrates the session asynchronously after page load, so
+ * `auth.currentUser` is always null when the JS first runs. The old code called
+ * `getCurrentUser()` synchronously and immediately redirected unauthenticated.
+ * We now show a loading skeleton and wait for the `onAuthStateChanged` callback
+ * to fire before deciding whether to redirect or render bookings.
+ */
+if (!isFirebaseConfigured) {
+  // Demo mode — session is stored in localStorage, available synchronously
+  const user = getCurrentUser();
+  if (!user) {
+    redirectToLogin('/my-bookings.html');
+  } else {
+    initPage(user);
+  }
 } else {
-  initPage(user);
+  // Firebase mode — show a loading state while SDK rehydrates the session
+  if (bookingsGrid) {
+    bookingsGrid.innerHTML = '<div class="loading-state">Loading your bookings…</div>';
+  }
+  if (userGreeting) {
+    userGreeting.textContent = 'Loading…';
+  }
 }
 
+// `onUserAuthChanged` uses Firebase's `onAuthStateChanged` when configured,
+// so it fires once the session is definitely resolved — with a real user object
+// (if logged in) or null (if not). This is the single authoritative handler.
+let pageInitialized = false;
 onUserAuthChanged((authUser) => {
-  if (!authUser) redirectToLogin('/my-bookings.html');
+  if (!authUser) {
+    redirectToLogin('/my-bookings.html');
+  } else if (!pageInitialized) {
+    pageInitialized = true;
+    initPage(authUser);
+  }
 });

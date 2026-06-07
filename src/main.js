@@ -14,6 +14,7 @@ import {
   addDemoBooking,
   addDemoMessage,
   addDemoSubscriber,
+  onDemoStorageChange,
   DEMO_STORAGE_KEYS,
 } from './services/demoStorage';
 import { initLanguageToggle } from './i18n';
@@ -176,8 +177,9 @@ function refreshDemoTours() {
 function loadTours() {
   if (!isFirebaseConfigured) {
     refreshDemoTours();
-    window.addEventListener('storage', (e) => {
-      if (e.key === DEMO_STORAGE_KEYS.TOURS) refreshDemoTours();
+    // Listen for changes from admin panel (same-tab BroadcastChannel + cross-tab storage event)
+    onDemoStorageChange((type) => {
+      if (type === 'tours') refreshDemoTours();
     });
     return;
   }

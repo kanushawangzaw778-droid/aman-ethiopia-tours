@@ -83,4 +83,38 @@ export function addDemoSubscriber(subscriber) {
   return subscriber;
 }
 
+/**
+ * Subscribe to cross-tab data changes (tours / bookings / messages).
+ *
+ * Uses BroadcastChannel (receives messages from the admin tab even if it is
+ * the *same* browser window) AND the storage event (cross-tab fallback).
+ *
+ * @param {function(string): void} callback - called with the changed key name
+ *   e.g. 'tours', 'bookings', 'messages'
+ * @returns {function} unsubscribe
+ */
+export function onDemoStorageChange(callback) {
+  // BroadcastChannel: catches changes from admin in same & other tabs
+  let channel = null;
+  if (typeof BroadcastChannel !== 'undefined') {
+    channel = new BroadcastChannel('aman_demo_sync');
+    channel.onmessage = (ev) => {
+      if (ev.data?.type) callback(ev.data.type);
+    };
+  }
+
+  // storage event: catches changes made in OTHER tabs (complementary fallback)
+  const storageHandler = (e) => {
+    if (e.key === KEYS.TOURS) callback('tours');
+    else if (e.key === KEYS.BOOKINGS) callback('bookings');
+    else if (e.key === KEYS.MESSAGES) callback('messages');
+  };
+  window.addEventListener('storage', storageHandler);
+
+  return () => {
+    channel?.close();
+    window.removeEventListener('storage', storageHandler);
+  };
+}
+
 export { KEYS as DEMO_STORAGE_KEYS };

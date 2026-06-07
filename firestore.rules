@@ -7,10 +7,20 @@ service cloud.firestore {
         && request.auth.token.email == 'kanushawangzaw@gmail.com';
     }
 
+    // Fields a regular (non-admin) user should never be able to modify
     function clientPaymentFieldsUnchanged() {
       return !request.resource.data.diff(resource.data).affectedKeys().hasAny(
-        ['paymentStatus', 'status', 'transactionId', 'receipt', 'receiptImage', 'paidAt', 'verifiedBy', 'proofSubmittedAt']
+        ['paymentStatus', 'status', 'receipt', 'paidAt', 'verifiedBy', 'confirmedAt']
       );
+    }
+
+    // Allows a booking owner to submit Telebirr proof fields only
+    function validProofSubmit() {
+      return request.auth != null
+        && resource.data.userId == request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys()
+             .hasOnly(['transactionId', 'receiptImage', 'proofSubmittedAt', 'paymentStatus', 'status', 'updatedAt'])
+        && request.resource.data.paymentStatus == 'pending_review';
     }
 
     function validBookingCreate() {
@@ -23,14 +33,16 @@ service cloud.firestore {
 
     match /tours/{tourId} {
       allow read: if true;
+      // Admin can write (create/update/delete) tours
       allow write: if isAdmin();
     }
 
     match /bookings/{bookingId} {
       allow create: if validBookingCreate();
-      allow read: if request.auth != null
-        && (resource.data.userId == request.auth.uid || isAdmin());
-      allow update: if isAdmin() && clientPaymentFieldsUnchanged();
+      allow read:   if request.auth != null
+                      && (resource.data.userId == request.auth.uid || isAdmin());
+      // Admin has full update access; regular users may only submit proof
+      allow update: if isAdmin() || validProofSubmit();
       allow delete: if isAdmin();
     }
 

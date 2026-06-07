@@ -37,6 +37,17 @@ let allBookings = [];
 let allTours = [];
 let bookingsChart = null;
 
+// BroadcastChannel lets the admin tab push data-change events to all other
+// open tabs (including the customer-facing index page) in the same browser.
+// This fills the gap where same-tab `storage` events don't fire.
+const adminBroadcast = typeof BroadcastChannel !== 'undefined'
+  ? new BroadcastChannel('aman_demo_sync')
+  : null;
+
+function broadcastChange(type) {
+  adminBroadcast?.postMessage({ type, ts: Date.now() });
+}
+
 const loginForm = document.getElementById('loginForm');
 const loginOverlay = document.getElementById('loginOverlay');
 const adminApp = document.getElementById('adminApp');
@@ -695,6 +706,8 @@ tourForm?.addEventListener('submit', async (e) => {
       saveDemoTours(allTours);
       renderToursTable(allTours);
       document.getElementById('countTours').innerText = allTours.length;
+      // Notify other tabs + trigger same-tab listeners via a storage event shim
+      broadcastChange('tours');
     }
 
     tourModal.classList.remove('active');
@@ -707,15 +720,23 @@ tourForm?.addEventListener('submit', async (e) => {
 });
 
 async function deleteTour(id) {
-  if (confirm('Are you sure you want to delete this tour?')) {
-    if (isFirebaseConfigured) {
+  if (!confirm('Are you sure you want to delete this tour? This cannot be undone.')) return;
+
+  if (isFirebaseConfigured) {
+    try {
       await deleteDoc(doc(db, 'tours', id));
-    } else {
-      allTours = allTours.filter((t) => t.id !== id);
-      saveDemoTours(allTours);
-      renderToursTable(allTours);
-      document.getElementById('countTours').innerText = allTours.length;
+      // onSnapshot will re-render the table automatically
+    } catch (err) {
+      console.error('Failed to delete tour:', err);
+      alert('Could not delete tour. Check your admin permissions.');
     }
+  } else {
+    allTours = allTours.filter((t) => t.id !== id);
+    saveDemoTours(allTours);
+    renderToursTable(allTours);
+    document.getElementById('countTours').innerText = allTours.length;
+    // Push change to customer-facing pages
+    broadcastChange('tours');
   }
 }
 
@@ -727,33 +748,49 @@ async function sendBookingStatusEmail(bookingId, type) {
 
 async function updateBookingStatus(id, status) {
   const booking = allBookings.find((b) => b.id === id);
-  if (status === 'confirmed' && booking?.paymentStatus !== 'paid') {
-    alert('Booking cannot be confirmed until payment is verified.');
-    renderBookingsTable(allBookings);
-    return;
+
+  // Warn admin if payment hasn't been verified, but don't block — admin may
+  // have received payment via a channel not yet reflected in the system.
+  if (
+    status === 'confirmed' &&
+    booking?.paymentStatus !== 'paid' &&
+    booking?.paymentStatus !== 'pending_review'
+  ) {
+    const proceed = confirm(
+      `Payment for this booking is still "${booking?.paymentStatus || 'pending'}".\n\n` +
+      'Are you sure you want to confirm this booking without verified payment?'
+    );
+    if (!proceed) {
+      // Revert the select UI to previous value
+      renderBookingsTable(allBookings);
+      return;
+    }
   }
 
   if (!isFirebaseConfigured) {
     const updates = { status };
-    if (status === 'confirmed' && booking?.paymentStatus === 'paid') {
-      updates.confirmedAt = new Date().toISOString();
-    }
+    if (status === 'confirmed') updates.confirmedAt = new Date().toISOString();
     updateDemoBooking(id, updates);
     allBookings = getDemoBookings();
     refreshDemoBookings();
+    broadcastChange('bookings');
     return;
   }
 
-  const updates = { status, updatedAt: serverTimestamp() };
-  if (status === 'confirmed' && booking?.paymentStatus === 'paid') {
-    updates.confirmedAt = serverTimestamp();
-  }
-  await updateDoc(doc(db, 'bookings', id), updates);
+  try {
+    const updates = { status, updatedAt: serverTimestamp() };
+    if (status === 'confirmed') updates.confirmedAt = serverTimestamp();
+    await updateDoc(doc(db, 'bookings', id), updates);
 
-  if (status === 'confirmed') {
-    await sendBookingStatusEmail(id, 'booking_confirmed');
-  } else if (status === 'rejected') {
-    await sendBookingStatusEmail(id, 'booking_rejected');
+    if (status === 'confirmed') {
+      await sendBookingStatusEmail(id, 'booking_confirmed');
+    } else if (status === 'rejected') {
+      await sendBookingStatusEmail(id, 'booking_rejected');
+    }
+  } catch (err) {
+    console.error('Failed to update booking status:', err);
+    alert('Could not update booking status. Check your permissions and connection.');
+    renderBookingsTable(allBookings); // revert optimistic UI
   }
 }
 
