@@ -21,26 +21,15 @@ const envConfig = {
 export const isFirebaseConfigured =
   !isPlaceholder(envConfig.apiKey) && 
   !isPlaceholder(envConfig.projectId) &&
-  envConfig.apiKey.length > 10; // Extra check for valid looking key
+  envConfig.apiKey.length > 10;
 
 if (!isFirebaseConfigured) {
-  console.warn('⚠️ FIREBASE NOT CONFIGURED: The application is running in "Demo Mode".');
-  console.warn('Updates made in the admin panel will only be saved to this browser\'s LocalStorage.');
-  console.warn('To enable global updates across all devices, please add your Firebase environment variables (VITE_FIREBASE_*) to your .env or Vercel settings.');
-} else {
-  console.log('✅ Firebase initialized successfully in global mode.');
+  console.error('❌ CRITICAL ERROR: Firebase is not configured!');
+  console.error('The application requires valid Firebase environment variables (VITE_FIREBASE_*) to function.');
+  console.error('Global persistence is currently DISABLED until keys are added to .env or Vercel settings.');
 }
 
-const firebaseConfig = isFirebaseConfigured
-  ? envConfig
-  : {
-      apiKey: 'demo-key-not-configured',
-      authDomain: 'demo.firebaseapp.com',
-      projectId: 'demo-project',
-      storageBucket: 'demo.appspot.com',
-      messagingSenderId: '000000000000',
-      appId: '1:000000000000:web:000000000000',
-    };
+const firebaseConfig = envConfig; // No more local fallback config
 
 const app = initializeApp(firebaseConfig);
 

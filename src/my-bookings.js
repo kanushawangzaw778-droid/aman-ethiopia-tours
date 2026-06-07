@@ -132,31 +132,12 @@ initNavbarScroll();
 initLanguageToggle();
 initWhatsAppFloat();
 
-/**
- * Auth guard — handles both demo mode (synchronous) and Firebase mode (async).
- *
- * Bug fix: Firebase rehydrates the session asynchronously after page load, so
- * `auth.currentUser` is always null when the JS first runs. The old code called
- * `getCurrentUser()` synchronously and immediately redirected unauthenticated.
- * We now show a loading skeleton and wait for the `onAuthStateChanged` callback
- * to fire before deciding whether to redirect or render bookings.
- */
-if (!isFirebaseConfigured) {
-  // Demo mode — session is stored in localStorage, available synchronously
-  const user = getCurrentUser();
-  if (!user) {
-    redirectToLogin('/my-bookings.html');
-  } else {
-    initPage(user);
-  }
-} else {
-  // Firebase mode — show a loading state while SDK rehydrates the session
-  if (bookingsGrid) {
-    bookingsGrid.innerHTML = '<div class="loading-state">Loading your bookings…</div>';
-  }
-  if (userGreeting) {
-    userGreeting.textContent = 'Loading…';
-  }
+// Show a loading state while SDK rehydrates the session
+if (bookingsGrid) {
+  bookingsGrid.innerHTML = '<div class="loading-state">Loading your bookings…</div>';
+}
+if (userGreeting) {
+  userGreeting.textContent = 'Loading…';
 }
 
 // `onUserAuthChanged` uses Firebase's `onAuthStateChanged` when configured,

@@ -63,14 +63,14 @@ export function consumePendingBooking() {
 }
 
 export function getCurrentUser() {
-  if (isFirebaseConfigured && auth.currentUser) {
+  if (auth.currentUser) {
     return {
       uid: auth.currentUser.uid,
       email: auth.currentUser.email,
       displayName: auth.currentUser.displayName || auth.currentUser.email,
     };
   }
-  return getDemoSession();
+  return null;
 }
 
 export function isUserLoggedIn() {
@@ -78,30 +78,17 @@ export function isUserLoggedIn() {
 }
 
 export function onUserAuthChanged(callback) {
-  if (isFirebaseConfigured) {
-    return onAuthStateChanged(auth, (user) => {
-      if (user && !isAdminEmail(user.email)) {
-        // Clear any leftover demo session to prevent mixing states
-        clearDemoSession();
-        callback({
-          uid: user.uid,
-          email: user.email,
-          displayName: user.displayName || user.email,
-        });
-      } else if (user && isAdminEmail(user.email)) {
-        // Admin account — not a regular user, return null so pages redirect to login
-        callback(null);
-      } else {
-        // user === null: logged out. Return null (do NOT fall back to demo session)
-        clearDemoSession();
-        callback(null);
-      }
-    });
-  }
-
-  // Demo mode — session is synchronous via localStorage
-  callback(getDemoSession());
-  return () => {};
+  return onAuthStateChanged(auth, (user) => {
+    if (user && !isAdminEmail(user.email)) {
+      callback({
+        uid: user.uid,
+        email: user.email,
+        displayName: user.displayName || user.email,
+      });
+    } else {
+      callback(null);
+    }
+  });
 }
 
 export async function signUp(email, password, displayName) {
@@ -109,62 +96,27 @@ export async function signUp(email, password, displayName) {
     throw new Error('This email is reserved for admin use.');
   }
 
-  if (isFirebaseConfigured) {
-    const cred = await createUserWithEmailAndPassword(auth, email, password);
-    if (displayName) {
-      await updateProfile(cred.user, { displayName });
-    }
-    return { uid: cred.user.uid, email: cred.user.email, displayName: displayName || email };
+  const cred = await createUserWithEmailAndPassword(auth, email, password);
+  if (displayName) {
+    await updateProfile(cred.user, { displayName });
   }
-
-  const users = readDemoUsers();
-  if (users.some((u) => u.email.toLowerCase() === email.toLowerCase())) {
-    throw new Error('An account with this email already exists.');
-  }
-
-  const user = {
-    uid: `demo-${Date.now()}`,
-    email,
-    password,
-    displayName: displayName || email,
-  };
-  users.push(user);
-  writeDemoUsers(users);
-  const session = { uid: user.uid, email: user.email, displayName: user.displayName };
-  saveDemoSession(session);
-  return session;
+  return { uid: cred.user.uid, email: cred.user.email, displayName: displayName || email };
 }
 
 export async function signIn(email, password) {
-  if (isFirebaseConfigured) {
-    const cred = await signInWithEmailAndPassword(auth, email, password);
-    if (isAdminEmail(cred.user.email)) {
-      await signOut(auth);
-      throw new Error('Please use the admin panel for admin login.');
-    }
-    return {
-      uid: cred.user.uid,
-      email: cred.user.email,
-      displayName: cred.user.displayName || cred.user.email,
-    };
+  const cred = await signInWithEmailAndPassword(auth, email, password);
+  if (isAdminEmail(cred.user.email)) {
+    await signOut(auth);
+    throw new Error('Please use the admin panel for admin login.');
   }
-
-  const users = readDemoUsers();
-  const user = users.find(
-    (u) => u.email.toLowerCase() === email.toLowerCase() && u.password === password
-  );
-  if (!user) throw new Error('Invalid email or password.');
-
-  const session = { uid: user.uid, email: user.email, displayName: user.displayName };
-  saveDemoSession(session);
-  return session;
+  return {
+    uid: cred.user.uid,
+    email: cred.user.email,
+    displayName: cred.user.displayName || cred.user.email,
+  };
 }
 
 export async function signInWithGoogle() {
-  if (!isFirebaseConfigured) {
-    throw new Error('Google sign-in requires Firebase configuration.');
-  }
-
   const provider = new GoogleAuthProvider();
   const cred = await signInWithPopup(auth, provider);
   if (isAdminEmail(cred.user.email)) {
@@ -180,10 +132,7 @@ export async function signInWithGoogle() {
 }
 
 export async function logOut() {
-  if (isFirebaseConfigured && auth.currentUser) {
-    await signOut(auth);
-  }
-  clearDemoSession();
+  await signOut(auth);
 }
 
 export function redirectToLogin(returnPath = '/') {

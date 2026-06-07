@@ -167,23 +167,7 @@ function populateContactTourSelect(tours) {
   });
 }
 
-function refreshDemoTours() {
-  allTours = getDemoTours(SEED_TOURS);
-  applyFilters();
-  populateDestinationFilter(allTours);
-  populateContactTourSelect(allTours);
-}
-
 function loadTours() {
-  if (!isFirebaseConfigured) {
-    refreshDemoTours();
-    // Listen for changes from admin panel (same-tab BroadcastChannel + cross-tab storage event)
-    onDemoStorageChange((type) => {
-      if (type === 'tours') refreshDemoTours();
-    });
-    return;
-  }
-
   const toursQuery = query(collection(db, 'tours'), orderBy('name'));
   onSnapshot(
     toursQuery,
@@ -298,6 +282,17 @@ bookingForm?.addEventListener('submit', async (e) => {
   const totalAmount = participants * price;
   const paymentMethod = document.querySelector('input[name="payment"]:checked')?.value || 'stripe';
 
+  const submitBooking = async (bookingData) => {
+    const docRef = await addDoc(collection(db, 'bookings'), {
+      ...bookingData,
+      status: 'pending',
+      paymentStatus: 'pending',
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    });
+    return docRef.id;
+  };
+
   const bookingData = {
     userId: user.uid,
     tourId: document.getElementById('bookingTourId').value,
@@ -310,21 +305,11 @@ bookingForm?.addEventListener('submit', async (e) => {
     requests: document.getElementById('bRequests').value,
     paymentMethod,
     totalAmount,
-    status: 'pending',
-    paymentStatus: 'pending',
-    createdAt: serverTimestamp(),
   };
 
   try {
-    let bookingRef;
-    if (isFirebaseConfigured) {
-      bookingRef = await addDoc(collection(db, 'bookings'), bookingData);
-      bookingData.id = bookingRef.id;
-    } else {
-      bookingData.id = `local-${Date.now()}`;
-      bookingData.createdAt = new Date().toISOString();
-      addDemoBooking(bookingData);
-    }
+    const bookingId = await submitBooking(bookingData);
+    bookingData.id = bookingId;
 
     await notifyBookingCreated(bookingData);
 
@@ -488,6 +473,19 @@ document.getElementById('closeReceiptModal')?.addEventListener('click', () => {
   document.getElementById('receiptModal')?.classList.remove('active');
 });
 
+async function submitContactMessage(messageData) {
+  try {
+    await addDoc(collection(db, 'messages'), {
+      ...messageData,
+      status: 'new',
+      createdAt: serverTimestamp(),
+    });
+  } catch (err) {
+    console.error('Message submission failed:', err);
+    throw err;
+  }
+}
+
 document.getElementById('contactForm')?.addEventListener('submit', async (e) => {
   e.preventDefault();
   const messageData = {
@@ -496,20 +494,10 @@ document.getElementById('contactForm')?.addEventListener('submit', async (e) => 
     interestedIn: document.getElementById('cTour').value,
     subject: document.getElementById('cTour').value || 'General Inquiry',
     message: document.getElementById('cMessage').value,
-    status: 'new',
-    createdAt: serverTimestamp(),
   };
 
   try {
-    if (isFirebaseConfigured) {
-      await addDoc(collection(db, 'messages'), messageData);
-    } else {
-      addDemoMessage({
-        ...messageData,
-        id: `local-${Date.now()}`,
-        createdAt: new Date().toISOString(),
-      });
-    }
+    await submitContactMessage(messageData);
     await notifyContactMessage(messageData);
     e.target.reset();
     alert('Thank you! Your message has been sent. We will respond within 24 hours.');
@@ -518,15 +506,23 @@ document.getElementById('contactForm')?.addEventListener('submit', async (e) => 
   }
 });
 
+async function subscribeNewsletter(email) {
+  try {
+    await addDoc(collection(db, 'subscribers'), {
+      email,
+      createdAt: serverTimestamp(),
+    });
+  } catch (err) {
+    console.error('Newsletter submission failed:', err);
+    throw err;
+  }
+}
+
 document.getElementById('newsletterForm')?.addEventListener('submit', async (e) => {
   e.preventDefault();
   const email = document.getElementById('newsletterEmail').value;
   try {
-    if (isFirebaseConfigured) {
-      await addDoc(collection(db, 'subscribers'), { email, createdAt: serverTimestamp() });
-    } else {
-      addDemoSubscriber({ email, createdAt: new Date().toISOString() });
-    }
+    await subscribeNewsletter(email);
     e.target.reset();
     alert('Welcome! You have been subscribed to our newsletter.');
   } catch {
