@@ -71,7 +71,7 @@ export function initMobileMenu() {
 export function initNavbarScroll() {
   const navbar = document.querySelector('.navbar');
   if (!navbar) return;
-  const toggle = () => navbar.classList.toggle('scrolled', window.scrollY > 100);
+  const toggle = () => navbar.classList.toggle('scrolled', window.scrollY > 50);
   toggle();
   window.addEventListener('scroll', toggle);
 }

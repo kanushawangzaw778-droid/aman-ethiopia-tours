@@ -37,7 +37,7 @@ resumePendingBooking();
 
 const navbar = document.querySelector('.navbar');
 window.addEventListener('scroll', () => {
-  navbar.classList.toggle('scrolled', window.scrollY > 100);
+  navbar.classList.toggle('scrolled', window.scrollY > 50);
 });
 
 const slides = document.querySelectorAll('.slide');
