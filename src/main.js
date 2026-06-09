@@ -24,7 +24,7 @@ import {
   getCurrentUser,
   consumePendingBooking,
 } from './services/userAuth';
-import { initAuthNav, initMobileMenu } from './utils/authNav';
+import { initAuthNav, initMobileMenu, initNavbarScroll } from './utils/authNav';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -35,10 +35,7 @@ initAuthNav();
 handlePaymentReturn();
 resumePendingBooking();
 
-const navbar = document.querySelector('.navbar');
-window.addEventListener('scroll', () => {
-  navbar.classList.toggle('scrolled', window.scrollY > 50);
-});
+initNavbarScroll();
 
 const slides = document.querySelectorAll('.slide');
 let currentSlide = 0;

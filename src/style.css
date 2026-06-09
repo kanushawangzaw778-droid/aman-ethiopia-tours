@@ -77,20 +77,25 @@ img {
 }
 
 .navbar.scrolled {
-  background: var(--light);
+  background: var(--dark);
   padding: 0.8rem 0;
-  box-shadow: 0 5px 25px rgba(0,0,0,0.08);
-  color: var(--dark);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  color: var(--light);
 }
 
 .navbar.scrolled .btn-outline {
-  border-color: var(--dark);
-  color: var(--dark);
+  border-color: var(--light);
+  color: var(--light);
 }
 
 .navbar.scrolled .btn-outline:hover {
-  background-color: var(--dark);
-  color: var(--light);
+  background-color: var(--light);
+  color: var(--dark);
+}
+
+.navbar.scrolled .lang-toggle {
+    border-color: rgba(255, 255, 255, 0.4);
+    color: var(--light);
 }
 
 .nav-container {
@@ -1178,7 +1183,7 @@ input, select, textarea {
     
     .nav-links .nav-item {
         font-size: 1.5rem;
-        color: var(--light) !important;
+        color: var(--light);
     }
     
     .logo, .nav-actions {
