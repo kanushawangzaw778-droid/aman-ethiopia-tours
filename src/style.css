@@ -94,7 +94,7 @@ img {
 }
 
 .navbar.scrolled .lang-toggle {
-    border-color: rgba(255, 255, 255, 0.4);
+    border-color: var(--light);
     color: var(--light);
 }
 
@@ -1093,8 +1093,8 @@ input, select, textarea {
 }
 
 .navbar.scrolled .lang-toggle {
-    border-color: var(--dark);
-    color: var(--dark);
+    border-color: var(--light);
+    color: var(--light);
 }
 
 .lang-toggle:hover {
@@ -1190,4 +1190,3 @@ input, select, textarea {
         z-index: 1001;
     }
 }
-

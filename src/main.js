@@ -165,6 +165,14 @@ function populateContactTourSelect(tours) {
 }
 
 function loadTours() {
+  if (!isFirebaseConfigured) {
+    allTours = SEED_TOURS.map((t, i) => ({ id: `seed-${i}`, ...t }));
+    applyFilters();
+    populateDestinationFilter(allTours);
+    populateContactTourSelect(allTours);
+    return;
+  }
+
   const toursQuery = query(collection(db, 'tours'), orderBy('name'));
   onSnapshot(
     toursQuery,
@@ -178,9 +186,12 @@ function loadTours() {
       populateDestinationFilter(allTours);
       populateContactTourSelect(allTours);
     },
-    () => {
+    (err) => {
+      console.warn('Firestore load failed, using seed data:', err);
       allTours = SEED_TOURS.map((t, i) => ({ id: `seed-${i}`, ...t }));
-      renderTours(allTours);
+      applyFilters();
+      populateDestinationFilter(allTours);
+      populateContactTourSelect(allTours);
     }
   );
 }

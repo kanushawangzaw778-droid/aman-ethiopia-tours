@@ -78,6 +78,10 @@ export function isUserLoggedIn() {
 }
 
 export function onUserAuthChanged(callback) {
+  if (!isFirebaseConfigured || !auth) {
+    callback(getCurrentUser());
+    return () => {};
+  }
   return onAuthStateChanged(auth, (user) => {
     if (user && !isAdminEmail(user.email)) {
       callback({
